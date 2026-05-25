@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HOURSTACK - Premium Employee Monitoring & Workforce Intelligence Platform
 
 ![HOURSTACK](https://img.shields.io/badge/HOURSTACK-Premium%20SaaS-blueviolet)
@@ -360,3 +361,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ for modern enterprises**
+=======
+# hourstack
+xyz
+>>>>>>> 0a46903944a7bf1c596f51e715f6dbc11d930c69
