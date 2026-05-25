@@ -1,0 +1,178 @@
+// This is the Prisma schema file
+// To use this, run: npm install @prisma/client prisma
+// Then: npx prisma init
+// Update DATABASE_URL in .env.local and run: npx prisma migrate dev
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User/Auth Model
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String
+  role      Role       @default(EMPLOYEE)
+  avatar    String?
+  department String?
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  timeEntries     TimeEntry[]
+  attendanceRecords AttendanceRecord[]
+  activities      Activity[]
+  screenshots     Screenshot[]
+  projects        Project[] @relation("ProjectMembers")
+  managedProjects Project[] @relation("ProjectManager")
+  notifications   Notification[]
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+// Project Model
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  status      String   @default("in-progress") // completed, in-progress, planning
+  startDate   DateTime
+  deadline    DateTime
+  progress    Int      @default(0)
+  githubUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  manager     User     @relation("ProjectManager", fields: [managerId], references: [id])
+  managerId   String
+  members     User[]   @relation("ProjectMembers")
+  timeEntries TimeEntry[]
+  clients     Client[]
+}
+
+// Client Model
+model Client {
+  id       String   @id @default(cuid())
+  name     String
+  email    String
+  phone    String?
+  company  String
+  avatar   String?
+  projects Project[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Time Entry Model
+model TimeEntry {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  date        DateTime
+  startTime   DateTime
+  endTime     DateTime?
+  duration    Int      // in minutes
+  type        String   // work, break, away, offline
+  project     Project? @relation(fields: [projectId], references: [id])
+  projectId   String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+// Attendance Model
+model AttendanceRecord {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String
+  date         DateTime
+  checkIn      DateTime
+  checkOut     DateTime?
+  status       String   // present, absent, on-leave, holiday
+  workingHours Float
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Activity Model
+model Activity {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  timestamp DateTime
+  type      String   // screenshot, keyboard, mouse, app-switch, idle
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([timestamp])
+}
+
+// Screenshot Model
+model Screenshot {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  timestamp   DateTime
+  imageUrl    String
+  thumbnailUrl String?
+  appName     String?
+  windowTitle String?
+  isBlurred   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([timestamp])
+}
+
+// Notification Model
+model Notification {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  title     String
+  message   String
+  type      String   // info, warning, error, success
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Session Model (for NextAuth)
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Verification Token Model
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
