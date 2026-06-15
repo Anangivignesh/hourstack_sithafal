@@ -14,9 +14,14 @@ import {
   ArrowDownRight,
 } from 'lucide-react';
 import { GlassCard, StatCard } from '@/components/dashboard/GlassCard';
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
-import { TeamStatus } from '@/components/dashboard/TeamStatus';
-import { ProductivityChart } from '@/components/dashboard/ProductivityChart';
+import dynamic from 'next/dynamic';
+
+const ActivityFeed = dynamic(() => import('@/components/dashboard/ActivityFeed').then((mod) => mod.ActivityFeed), { ssr: false });
+const TeamStatus = dynamic(() => import('@/components/dashboard/TeamStatus').then((mod) => mod.TeamStatus), { ssr: false });
+const ProductivityChart = dynamic(() => import('@/components/dashboard/ProductivityChart').then((mod) => mod.ProductivityChart), {
+  ssr: false,
+  loading: () => <div className="w-full h-80 animate-pulse bg-slate-100 rounded-xl" />,
+});
 
 const containerVariants = {
   hidden: { opacity: 0 },
