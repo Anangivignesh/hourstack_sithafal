@@ -43,11 +43,7 @@ export function Header() {
   const roleLabel = user?.role === 'employee' ? 'Employee' : 'Admin';
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className="sticky top-0 z-40 w-full bg-gradient-to-b from-white via-white/95 to-white/90 border-b border-white/20 backdrop-blur-xl"
-    >
+    <header className="sticky top-0 z-40 w-full bg-white/95 border-b border-slate-200 backdrop-blur-sm">
       <div className="px-4 lg:px-8 py-4 flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center gap-4">
@@ -81,11 +77,7 @@ export function Header() {
             className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors group"
           >
             <Bell className="w-5 h-5 text-gray-700" />
-            <motion.span
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
-            />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
           </motion.button>
 
           {/* Settings */}
@@ -151,6 +143,6 @@ export function Header() {
           </div>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

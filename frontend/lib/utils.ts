@@ -137,3 +137,16 @@ export function throttle<T extends (...args: any[]) => any>(
     }
   };
 }
+
+/**
+ * Format seconds to HH:MM:SS
+ */
+export function formatTimeSeconds(seconds: number): string {
+  const hrs = Math.floor(seconds / 3600)
+  const mins = Math.floor((seconds % 3600) / 60)
+  const secs = seconds % 60
+  
+  const pad = (num: number) => String(num).padStart(2, '0')
+  
+  return `${pad(hrs)}:${pad(mins)}:${pad(secs)}`
+}

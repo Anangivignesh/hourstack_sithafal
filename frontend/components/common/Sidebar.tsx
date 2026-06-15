@@ -169,8 +169,8 @@ export const Sidebar = React.memo(function Sidebar() {
       <motion.aside
         initial={false}
         animate={{ x: sidebarOpen ? 0 : -300 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-0 z-40 flex h-screen w-72 flex-col border-r border-white/70 bg-white/82 shadow-2xl shadow-slate-900/8 backdrop-blur-2xl lg:static lg:translate-x-0 will-change-transform"
+        transition={{ type: 'tween', duration: 0.2, ease: 'easeInOut' }}
+        className="fixed left-0 top-0 z-40 flex h-screen w-72 flex-col border-r border-slate-200 bg-white shadow-lg lg:static lg:translate-x-0 will-change-transform"
       >
         <div className="px-5 pb-4 pt-6">
           <Link href="/dashboard" onClick={closeMobileSidebar} className="flex items-center gap-3">
