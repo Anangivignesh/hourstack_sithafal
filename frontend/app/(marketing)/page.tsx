@@ -27,8 +27,9 @@ import {
   Users2,
   Workflow,
 } from 'lucide-react';
-import { BookDemoModal } from '@/components/modals/BookDemoModal';
+import dynamic from 'next/dynamic';
 
+const BookDemoModal = dynamic(() => import('@/components/modals/BookDemoModal').then((mod) => mod.BookDemoModal), { ssr: false });
 const navItems = [
   { label: 'Platform', href: '#platform' },
   { label: 'Intelligence', href: '#intelligence' },
