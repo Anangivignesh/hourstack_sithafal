@@ -4,6 +4,7 @@ import './globals.css';
 import Loading from './loading';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: 'HOURSTACK - Employee Monitoring & Workforce Intelligence',
   description: 'Premium employee monitoring and workforce intelligence platform with real-time tracking, analytics, and reporting.',
   keywords: 'employee monitoring, time tracking, workforce intelligence, productivity analytics',
